@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Makanan Kantin Sekolah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* HERO DENGAN GAMBAR ASLI */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                        url('https://images.unsplash.com/photo-1504674900247-0877df9cc836');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+        }
+
+        .hero p {
+            font-size: 18px;
+        }
+
+        .btn {
+            background-color: #ff7043;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        header {
+            background-color: #ff7043;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .price {
+            color: green;
+            font-weight: bold;
+        }
+
+        .cart {
+            background: white;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #333;
+            color: white;
+            margin-top: 20px;
+        }
+        
+        /* NAVBAR */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center; /* bikin menu ke tengah */
+    z-index: 1000;
+}
+
+/* MENU DI TENGAH */
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+    padding: 0;
+    margin: 0;
+}
+
+/* LINK */
+.nav-menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.nav-menu li a:hover {
+    color: #ff7043;
+}
+
+/* LOGO DI KIRI TANPA GANGGU TENGAH */
+.logo {
+    position: absolute;
+    left: 30px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+    </style>
+</head>
+<body>
+
+    
+<nav class="navbar">
+    <div class="logo">KantinKu</div>
+
+    <ul class="nav-menu">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#menuSection">Menu</a></li>
+        <li><a href="#keranjang">Keranjang</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div>
+        <h1>Selamat Datang di Kantin Sekolah</h1>
+        <p>Makanan enak, murah, dan bikin semangat belajar!</p>
+        <button class="btn" onclick="scrollKeMenu()">Lihat Menu</button>
+    </div>
+</section>
+
+<header id="menuSection">
+    <h1>Menu Makanan Kantin Sekolah</h1>
+</header>
+
+<div class="container">
+    <div class="menu">
+        <div class="card">
+            <h3>Es Teh Manis</h3>
+            <p class="price">Rp3.000</p>
+            <button class="btn" onclick="tambahPesanan('Es Teh Manis', 3000)">Pesan</button>
+        </div>
+
+        <div class="card">
+            <h3>Es Strup</h3>
+            <p class="price">Rp3.000</p>
+            <button class="btn" onclick="tambahPesanan('Es Strup', 3000)">Pesan</button>
+        </div>
+
+        <div class="card">
+            <h3>Es Kopi</h3>
+            <p class="price">Rp4.000</p>
+            <button class="btn" onclick="tambahPesanan('Es Kopi', 4000)">Pesan</button>
+        </div>
+
+        <div class="card">
+            <h3>Es Kelapa</h3>
+            <p class="price">Rp4.000</p>
+            <button class="btn" onclick="tambahPesanan('Es Kelapa', 4000)">Pesan</button>
+        </div>
+
+        <div class="card">
+            <h3>Mie Instan</h3>
+            <p class="price">Rp5.000</p>
+            <button class="btn" onclick="tambahPesanan('Mie Instan', 5000)">Pesan</button>
+        </div>
+
+        <div class="card">
+            <h3>Ayam Geprek</h3>
+            <p class="price">Rp6.000</p>
+            <button class="btn" onclick="tambahPesanan('Ayam Geprek', 6000)">Pesan</button>
+        </div>
+
+        <div class="card">
+            <h3>Mie Ayam</h3>
+            <p class="price">Rp6.000</p>
+            <button class="btn" onclick="tambahPesanan('Mie Ayam', 6000)">Pesan</button>
+        </div>
+
+        <div class="card">
+            <div>
+            <h3>Nasi Pecel</h3>
+            <p class="price">Rp6.000</p>
+            <button class="btn" onclick="tambahPesanan('Nasi Pecel', 6000)">Pesan</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Bakso</h3>
+            <p class="price">Rp7.000</p>
+            <button class="btn" onclick="tambahPesanan('Bakso', 7000)">Pesan</button>
+        </div>
+
+        <div class="card">
+            <h3>Nasi Soto</h3>
+            <p class="price">Rp10.000</p>
+            <button class="btn" onclick="tambahPesanan('Nasi Soto', 10000)">Pesan</button>
+        </div>
+    </div>
+
+    <div class="cart">
+        <h2>Keranjang</h2>
+        <ul id="daftarPesanan"></ul>
+        <p><strong>Total: Rp <span id="total">0</span></strong></p>
+        <button class="btn" onclick="kirimWhatsApp()">Kirim ke WhatsApp</button>
+    </div>
+</div>
+
+<footer>
+    <p>2026 Kantin Sekolah</p>
+</footer>
+
+<script>
+    function scrollKeMenu() {
+        document.getElementById("menuSection").scrollIntoView({ behavior: "smooth" });
+    }
+
+    let pesanan = [];
+    let total = 0;
+
+    function tambahPesanan(nama, harga) {
+        pesanan.push({nama, harga});
+        total += harga;
+        tampilkanPesanan();
+    }
+
+    function tampilkanPesanan() {
+        let list = document.getElementById("daftarPesanan");
+        list.innerHTML = "";
+
+        pesanan.forEach(item => {
+            let li = document.createElement("li");
+            li.textContent = item.nama + " - Rp" + item.harga;
+            list.appendChild(li);
+        });
+
+        document.getElementById("total").innerText = total;
+    }
+
+    function kirimWhatsApp() {
+        if (pesanan.length === 0) {
+            alert("Pesanan masih kosong!");
+            return;
+        }
+
+        let pesanText = "Halo, saya ingin memesan:%0A";
+        pesanan.forEach(item => {
+            pesanText += "- " + item.nama + " (Rp" + item.harga + ")%0A";
+        });
+        pesanText += "%0ATotal: Rp" + total;
+
+        let nomor = "6285733283615";
+        let url = "https://wa.me/" + nomor + "?text=" + pesanText;
+
+        window.open(url, "_blank");
+    }
+</script>
+
+</body>
+</html>
