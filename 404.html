@@ -4,44 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Makanan Kantin Sekolah</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Nunito', Arial, sans-serif;
             margin: 0;
-            background-color: #f4f4f4;
+            background: linear-gradient(180deg, #fff7f1 0%, #f4f4f4 100%);
+            color: #333;
+            padding-top: 70px;
         }
 
         /* HERO DENGAN GAMBAR ASLI */
         .hero {
-            height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-                        url('https://images.unsplash.com/photo-1504674900247-0877df9cc836');
+            min-height: 80vh;
+            background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+                        url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
+            padding: 40px 20px;
         }
 
         .hero h1 {
-            font-size: 42px;
+            font-size: clamp(2.5rem, 4vw, 4.5rem);
+            line-height: 1.1;
+            margin: 0;
         }
 
         .hero p {
-            font-size: 18px;
+            font-size: clamp(1rem, 1.8vw, 1.3rem);
+            margin-top: 15px;
+            max-width: 700px;
         }
 
         .btn {
             background-color: #ff7043;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 12px 24px;
             margin-top: 15px;
-            border-radius: 5px;
+            border-radius: 999px;
             cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 10px 20px rgba(255,112,67,0.18);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 24px rgba(255,112,67,0.24);
         }
 
         header {
@@ -49,24 +67,69 @@
             color: white;
             text-align: center;
             padding: 20px;
+            margin-top: 20px;
+            border-radius: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .container {
             padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .menu {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
         }
 
         .card {
             background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 18px;
+            border-radius: 22px;
+            box-shadow: 0 16px 35px rgba(0,0,0,0.08);
             text-align: center;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 18px;
+            margin-bottom: 16px;
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 1.3rem;
+            color: #222;
+        }
+
+        .card p {
+            margin: 0 0 10px;
+        }
+
+        .card .price {
+            color: #2e7d32;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .card textarea {
+            min-height: 70px;
         }
 
         .price {
@@ -74,11 +137,103 @@
             font-weight: bold;
         }
 
+        .quantity {
+            color: #ff7043;
+            font-size: 14px;
+            margin: 8px 0;
+        }
+
         .cart {
             background: white;
-            padding: 15px;
-            margin-top: 20px;
+            padding: 0;
+            margin-top: 30px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 16px 35px rgba(0,0,0,0.08);
+        }
+
+        .cart-header {
+            background: #ff7043;
+            color: white;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .cart-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cart-toggle-icon {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .cart-toggle-icon.open {
+            transform: rotate(180deg);
+        }
+
+        .cart-content {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+            padding: 20px;
+        }
+
+        .cart-content.closed {
+            max-height: 0;
+            opacity: 0;
+            padding: 0 20px;
+        }
+
+        .cart-content {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .cart-content.closed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .cart-badge {
+            background-color: #ff7043;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        /* DIAGRAM PENJUALAN */
+        .sales-chart-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
             border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .sales-chart-section h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
         }
 
         footer {
@@ -88,6 +243,36 @@
             color: white;
             margin-top: 20px;
         }
+
+        .visitor-counter {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: rgba(255, 112, 67, 0.3);
+            border-radius: 5px;
+            border: 1px solid #ff7043;
+        }
+
+        .visitor-counter span {
+            font-weight: bold;
+            color: #ff7043;
+        }
+
+        .total-belanja-counter {
+            display: inline-block;
+            margin-top: 10px;
+            margin-left: 20px;
+            padding: 10px 15px;
+            background-color: rgba(76, 175, 80, 0.3);
+            border-radius: 5px;
+            border: 1px solid #4caf50;
+        }
+
+        .total-belanja-counter span {
+            font-weight: bold;
+            color: #4caf50;
+        }
+
         
         /* NAVBAR */
 .navbar {
@@ -141,7 +326,7 @@
     <div class="logo">KantinKu</div>
 
     <ul class="nav-menu">
-        <li><a href="#hero">Home</a></li>
+        <li><a href="#hero">Beranda</a></li>
         <li><a href="#menuSection">Menu</a></li>
         <li><a href="#keranjang">Keranjang</a></li>
     </ul>
@@ -151,7 +336,7 @@
 <section class="hero">
     <div>
         <h1>Selamat Datang di Kantin Sekolah</h1>
-        <p>Makanan enak, murah, dan bikin semangat belajar!</p>
+        <p>Makanan enak, murah, dan membuat semangat belajar!</p>
         <button class="btn" onclick="scrollKeMenu()">Lihat Menu</button>
     </div>
 </section>
@@ -163,81 +348,239 @@
 <div class="container">
     <div class="menu">
         <div class="card">
+            <img src="64e59deb79bfb.jpg" alt="Es Teh Manis">
             <h3>Es Teh Manis</h3>
             <p class="price">Rp3.000</p>
+            <p class="quantity">Terjual: <span id="qty-Es Teh Manis">0</span></p>
             <button class="btn" onclick="tambahPesanan('Es Teh Manis', 3000)">Pesan</button>
         </div>
 
         <div class="card">
+            <img src="dbhqe67477dijdm.jpeg" alt="Es Strup">
             <h3>Es Strup</h3>
             <p class="price">Rp3.000</p>
+            <p class="quantity">Terjual: <span id="qty-Es Strup">0</span></p>
             <button class="btn" onclick="tambahPesanan('Es Strup', 3000)">Pesan</button>
         </div>
 
         <div class="card">
+            <img src="Nes_Web3_RDP_RecipeHeroBanner_IcedChocCoffee_770x770.webp" alt="Es Kopi">
             <h3>Es Kopi</h3>
             <p class="price">Rp4.000</p>
+            <p class="quantity">Terjual: <span id="qty-Es Kopi">0</span></p>
             <button class="btn" onclick="tambahPesanan('Es Kopi', 4000)">Pesan</button>
         </div>
 
         <div class="card">
+            <img src="e21b038b-21d3-40b8-b44d-4898c2c1a92c_Go-Biz_20220207_130322.jpeg" alt="Es Kelapa">
             <h3>Es Kelapa</h3>
             <p class="price">Rp4.000</p>
+            <p class="quantity">Terjual: <span id="qty-Es Kelapa">0</span></p>
             <button class="btn" onclick="tambahPesanan('Es Kelapa', 4000)">Pesan</button>
         </div>
 
         <div class="card">
+            <img src="tips-membuat-mie-instan-ala-warmindo-1r8cjx.png" alt="Mie Instan">
             <h3>Mie Instan</h3>
             <p class="price">Rp5.000</p>
+            <p class="quantity">Terjual: <span id="qty-Mie Instan">0</span></p>
             <button class="btn" onclick="tambahPesanan('Mie Instan', 5000)">Pesan</button>
         </div>
 
         <div class="card">
+            <img src="m4lS99fNchojqo64vCHOPJeGRuCvaRhf-31373037393632363639d41d8cd98f00b204e9800998ecf8427e.webp" alt="Ayam Geprek">
             <h3>Ayam Geprek</h3>
             <p class="price">Rp6.000</p>
+            <p class="quantity">Terjual: <span id="qty-Ayam Geprek">0</span></p>
             <button class="btn" onclick="tambahPesanan('Ayam Geprek', 6000)">Pesan</button>
         </div>
 
         <div class="card">
+            <img src="257956.avif" alt="Mie Ayam">
             <h3>Mie Ayam</h3>
             <p class="price">Rp6.000</p>
+            <p class="quantity">Terjual: <span id="qty-Mie Ayam">0</span></p>
             <button class="btn" onclick="tambahPesanan('Mie Ayam', 6000)">Pesan</button>
         </div>
 
         <div class="card">
-            <div>
+            <img src="HbGaLlzalMxgBaAqOFgVnqBYBbCc1nmA-31363830353235353631d41d8cd98f00b204e9800998ecf8427e.webp" alt="Nasi Pecel">
             <h3>Nasi Pecel</h3>
             <p class="price">Rp6.000</p>
+            <p class="quantity">Terjual: <span id="qty-Nasi Pecel">0</span></p>
             <button class="btn" onclick="tambahPesanan('Nasi Pecel', 6000)">Pesan</button>
-            </div>
         </div>
 
         <div class="card">
+            <img src="bakso-enak-di-bandung-992x627.webp" alt="Bakso">
             <h3>Bakso</h3>
             <p class="price">Rp7.000</p>
+            <p class="quantity">Terjual: <span id="qty-Bakso">0</span></p>
             <button class="btn" onclick="tambahPesanan('Bakso', 7000)">Pesan</button>
         </div>
 
         <div class="card">
-            <h3>Nasi Soto</h3>
+            <img src="images (1).jpg" alt="Soto">
+            <h3>Soto</h3>
             <p class="price">Rp10.000</p>
-            <button class="btn" onclick="tambahPesanan('Nasi Soto', 10000)">Pesan</button>
+            <p class="quantity">Terjual: <span id="qty-Soto">0</span></p>
+            <button class="btn" onclick="tambahPesanan('Soto', 10000)">Pesan</button>
         </div>
     </div>
 
-    <div class="cart">
-        <h2>Keranjang</h2>
-        <ul id="daftarPesanan"></ul>
-        <p><strong>Total: Rp <span id="total">0</span></strong></p>
-        <button class="btn" onclick="kirimWhatsApp()">Kirim ke WhatsApp</button>
+    <div class="cart" id="keranjang">
+        <div class="cart-header" onclick="toggleCart()">
+            <h2>
+                🛒 Keranjang
+                <span class="cart-badge" id="cartCount">0</span>
+            </h2>
+            <span class="cart-toggle-icon" id="cartIcon">▼</span>
+        </div>
+        <div class="cart-content" id="cartContent">
+            <ul id="daftarPesanan"></ul>
+            <p><strong>Total: Rp <span id="total">0</span></strong></p>
+            <button class="btn" onclick="event.stopPropagation(); kirimWhatsApp()">Kirim ke WhatsApp</button>
+        </div>
+    </div>
+</div>
+
+<!-- DIAGRAM PENJUALAN -->
+<div class="container">
+    <div class="sales-chart-section">
+        <h2>📊 Diagram Penjualan</h2>
+        <div class="chart-container">
+            <canvas id="salesChart"></canvas>
+        </div>
     </div>
 </div>
 
 <footer>
     <p>2026 Kantin Sekolah</p>
+    <div class="visitor-counter">
+        Pengunjung: <span id="visitorCount">0</span>
+    </div>
+    <div class="total-belanja-counter">
+        Jumlah Penjualan: <span id="totalBelanja">0</span>
+    </div>
 </footer>
 
 <script>
+    function initVisitorCounter() {
+        let visitorCount = localStorage.getItem('visitorCount');
+        
+        if (visitorCount === null) {
+            visitorCount = 1;
+        } else {
+            visitorCount = parseInt(visitorCount) + 1;
+        }
+        
+        localStorage.setItem('visitorCount', visitorCount);
+        document.getElementById('visitorCount').innerText = visitorCount;
+    }
+
+    function initJumlahPenjualan() {
+        let jumlahPenjualan = localStorage.getItem('jumlahPenjualan');
+        if (jumlahPenjualan === null) {
+            jumlahPenjualan = 0;
+        } else {
+            jumlahPenjualan = parseInt(jumlahPenjualan);
+        }
+        document.getElementById('totalBelanja').innerText = jumlahPenjualan;
+    }
+
+    function initQuantityCounters() {
+        const items = ['Es Teh Manis', 'Es Strup', 'Es Kopi', 'Es Kelapa', 'Mie Instan', 'Ayam Geprek', 'Mie Ayam', 'Nasi Pecel', 'Bakso', 'Soto'];
+        items.forEach(item => {
+            let qty = localStorage.getItem('qty-' + item);
+            if (qty === null) {
+                qty = 0;
+            } else {
+                qty = parseInt(qty);
+            }
+            const element = document.getElementById('qty-' + item);
+            if (element) {
+                element.innerText = qty;
+            }
+        });
+    }
+
+
+    let salesChart;
+
+    function initSalesChart() {
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        
+        const items = ['Es Teh Manis', 'Es Strup', 'Es Kopi', 'Es Kelapa', 'Mie Instan', 'Ayam Geprek', 'Mie Ayam', 'Nasi Pecel', 'Bakso', 'Soto'];
+        const salesData = items.map(item => {
+            let qty = localStorage.getItem('qty-' + item);
+            return qty ? parseInt(qty) : 0;
+        });
+
+        salesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: items,
+                datasets: [{
+                    label: 'Jumlah Terjual',
+                    data: salesData,
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                        '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF',
+                        '#4BC0C0', '#FF6384'
+                    ],
+                    borderColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                        '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF',
+                        '#4BC0C0', '#FF6384'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Statistik Penjualan Menu Kantin',
+                        font: {
+                            size: 16
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function updateSalesChart() {
+        const items = ['Es Teh Manis', 'Es Strup', 'Es Kopi', 'Es Kelapa', 'Mie Instan', 'Ayam Geprek', 'Mie Ayam', 'Nasi Pecel', 'Bakso', 'Soto'];
+        const salesData = items.map(item => {
+            let qty = localStorage.getItem('qty-' + item);
+            return qty ? parseInt(qty) : 0;
+        });
+
+        salesChart.data.datasets[0].data = salesData;
+        salesChart.update();
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+        initVisitorCounter();
+        initJumlahPenjualan();
+        initQuantityCounters();
+        initSalesChart();
+    });
+
     function scrollKeMenu() {
         document.getElementById("menuSection").scrollIntoView({ behavior: "smooth" });
     }
@@ -262,6 +605,15 @@
         });
 
         document.getElementById("total").innerText = total;
+        document.getElementById("cartCount").innerText = pesanan.length;
+    }
+
+    function toggleCart() {
+        const cartContent = document.getElementById("cartContent");
+        const cartIcon = document.getElementById("cartIcon");
+        
+        cartContent.classList.toggle("closed");
+        cartIcon.classList.toggle("open");
     }
 
     function kirimWhatsApp() {
@@ -276,10 +628,45 @@
         });
         pesanText += "%0ATotal: Rp" + total;
 
+        // Update jumlah penjualan setelah pembayaran
+        let jumlahPenjualan = localStorage.getItem('jumlahPenjualan');
+        if (jumlahPenjualan === null) {
+            jumlahPenjualan = pesanan.length;
+        } else {
+            jumlahPenjualan = parseInt(jumlahPenjualan) + pesanan.length;
+        }
+        localStorage.setItem('jumlahPenjualan', jumlahPenjualan);
+        document.getElementById('totalBelanja').innerText = jumlahPenjualan;
+
+        // Update jumlah penjualan per item setelah pembayaran
+        pesanan.forEach(item => {
+            let itemQty = localStorage.getItem('qty-' + item.nama);
+            if (itemQty === null) {
+                itemQty = 1;
+            } else {
+                itemQty = parseInt(itemQty) + 1;
+            }
+            localStorage.setItem('qty-' + item.nama, itemQty);
+            const qtyElement = document.getElementById('qty-' + item.nama);
+            if (qtyElement) {
+                qtyElement.innerText = itemQty;
+            }
+        });
+
+        // Update diagram penjualan
+        updateSalesChart();
+
         let nomor = "6285733283615";
         let url = "https://wa.me/" + nomor + "?text=" + pesanText;
 
         window.open(url, "_blank");
+        
+        // Reset pesanan setelah kirim
+        pesanan = [];
+        total = 0;
+        tampilkanPesanan();
+        
+        alert("Pesanan berhasil dikirim! Terima kasih telah berbelanja.");
     }
 </script>
 
